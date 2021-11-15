@@ -1,8 +1,8 @@
 {
     "name": "GroupMe Calendar to ICS",
     "description": "Turn your GroupMe event calendar into an ICS feed (for Google Calendar, Apple Calendar, Outlook, etc.).",
-    "website": "https://github.com/amussey/groupme-calendar-to-ics",
-    "repository": "https://github.com/amussey/groupme-calendar-to-ics",
+    "website": "https://github.com/alexleocampbell/groupme-calendar-to-ics/",
+    "repository": "https://github.com/alexleocampbell/groupme-calendar-to-ics/",
     "logo": "https://raw.githubusercontent.com/amussey/groupme-calendar-to-ics/master/static/images/logo-1024.png",
     "success_url": "/",
     "keywords": [
@@ -39,5 +39,6 @@
         }
     },
     "addons": [],
-    "generator": "https://www.expeditedssl.com/heroku-button-maker"
+    "generator": "https://www.expeditedssl.com/heroku-button-maker",
+    "stack": "heroku-18"
 }
