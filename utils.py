@@ -85,7 +85,7 @@ def groupme_json_to_ics(groupme_json, static_name=None):
                 event['description'] += 'Location:\n'
 
                 if location.get('name') and location.get('address'):
-                    event['location'] = "{}, {}".format(location.get('name'), location.get('address').strip().replace("\n", ", "))
+                    event['location'] = "{}, {}".format(location.get('name').encode('utf-8'), location.get('address').strip().replace("\n", ", "))
                     event['description'] += location.get('name')
                     event['description'] += '\n'
                     event['description'] += location.get('address')
