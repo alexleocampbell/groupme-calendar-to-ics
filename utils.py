@@ -54,6 +54,9 @@ def load_groupme_json(app, groupme_api_key, groupme_group_id):
     if response.status_code == 200:
         if response.json().get('response', {}).get('name', None):
             current_app.groupme_calendar_name = response.json().get('response', {}).get('name')
+        #Fetches share URL for group too
+        if response.json().get('response', {}).get('share_url', None):
+            current_app.groupme_calendar_nameurl = response.json().get('response', {}).get('share_url')
 
     current_app.groupme_load_successfully = True
     return True
@@ -65,7 +68,7 @@ def groupme_json_to_ics(groupme_json, static_name=None):
     cal['version'] = '2.0'
     cal['calscale'] = 'GREGORIAN'
     cal['method'] = 'PUBLISH'
-    cal['x-wr-calname'] = 'GroupMe: {}'.format(current_app.groupme_calendar_name)
+    cal['x-wr-calname'] = '{} GroupMe'.format(current_app.groupme_calendar_name)
     cal['x-wr-timezone'] = current_app.calendar_timezone
 
     for json_blob in groupme_json['response']['events']:
@@ -103,6 +106,13 @@ def groupme_json_to_ics(groupme_json, static_name=None):
                     else:
                         event['description'] += '\n'
                     event['description'] += location_url
+
+            #Adds GroupMe name and link to each calendar entry 
+            if json_blob.get('description'):
+                event['description'] += '\n\n'
+                event['description'] += 'Posted in: {}'.format(current_app.groupme_calendar_name)
+                event['description'] += '\n'
+                event['description'] += current_app.groupme_calendar_nameurl
 
             if json_blob.get('updated_at'):
                 event['last-modified'] = dateutil.parser.parse(json_blob.get('updated_at'))
