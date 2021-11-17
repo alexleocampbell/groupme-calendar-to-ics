@@ -12,7 +12,7 @@
     ],
     "env": {
         "GROUPME_GROUP_ID": {
-            "description": "The ID for the GroupMe group.  This can be found on the webapp (https://web.groupme.com) under the Settings option for your group.",
+            "description": "The ID for the GroupMe group(s). If more than one, list must be comma separated with no spaces e.g. xxxxxx,yyyyyy. Handy tool for finding your Group ID: https://www.schmessage.com/IDFinder/",
             "value": ""
         },
         "GROUPME_API_KEY": {
@@ -28,9 +28,8 @@
             "value": "America/Los_Angeles"
         },
         "GROUPME_STATIC_NAME": {
-            "description": "(Optional) A static name for the group.  This will lock a name for the calendar, even if the group decides to change their name.",
-            "value": "",
-            "required": false
+            "description": "The displayed static name for the group calendar (not dynamic due to multiple group support).",
+            "value": ""
         },
         "GROUPME_PROXY_URL": {
             "description": "(Optional) A proxy URL to provide for the calendar.ics. ",

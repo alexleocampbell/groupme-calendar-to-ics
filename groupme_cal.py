@@ -48,7 +48,6 @@ def index():
 
     params = {
         'title': getattr(current_app, 'groupme_calendar_name', 'GroupMe'),
-        'groupme_id': groupme_group_id,
         'ics_url_http': ics_url_http,
         'ics_url_webcal': ics_url_webcal,
         'ics_url_google': ics_url_google,
