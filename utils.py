@@ -57,6 +57,34 @@ def load_groupme_json(app, groupme_api_key, groupme_group_id):
 
         current_app.groupme_calendar_json_cache.append(response.json())
 
+        # Reset pagination values
+        has_next_key = False
+        nextkey = ""
+
+        # Check if response has pagination 
+        if response.json().get('response', {}).get('next', None):
+            has_next_key = True
+            nextkey = response.json().get('response', {}).get('next')
+        
+        # Append paginated pages while they exist
+        while has_next_key:
+            url_calendar_next = 'https://api.groupme.com{nextkey}'.format(nextkey=nextkey)
+            response = requests.get(url_calendar_next, headers=headers)
+
+            if response.status_code != 200:
+                current_app.groupme_load_successfully = False
+                app.logger.error('{}: {}'.format(response.status_code, response.text))
+                return False
+
+            current_app.groupme_calendar_json_cache.append(response.json())
+
+            if response.json().get('response', {}).get('next', None):
+                nextkey = response.json().get('response', {}).get('next')
+            else:
+                has_next_key = False
+                # no next_key, stop the loop
+
+        # Get group name and group share URL
         response = requests.get(url_group_info, headers=headers)
         if response.status_code == 200:
             # Append name of the group 
