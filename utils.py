@@ -156,9 +156,9 @@ def groupme_json_to_ics(groupme_json, static_name=None):
                 
                 # Adds GroupMe name and link to each calendar entry 
                 event['description'] += 'Posted in: '
+                event['description'] += '<a href="{}" target="_blank">'.format(details[1])
                 event['description'] += details[0]
-                event['description'] += '\n'
-                event['description'] += details[1]
+                event['description'] += '</a> chat'
 
                 if json_blob.get('updated_at'):
                     event['last-modified'] = dateutil.parser.parse(json_blob.get('updated_at'))
