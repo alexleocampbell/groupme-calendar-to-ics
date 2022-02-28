@@ -158,7 +158,7 @@ def groupme_json_to_ics(groupme_json, static_name=None):
                 event['description'] += 'Posted in: '
                 event['description'] += '<a href="{}" target="_blank">'.format(details[1])
                 event['description'] += details[0]
-                event['description'] += '</a> chat'
+                event['description'] += ' chat</a>'
 
                 if json_blob.get('updated_at'):
                     event['last-modified'] = dateutil.parser.parse(json_blob.get('updated_at'))
