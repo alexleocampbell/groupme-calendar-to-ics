@@ -43,6 +43,9 @@ def load_groupme_json(app, groupme_api_key, groupme_group_id):
     current_app.groupme_calendar_json_cache = []
     current_app.groupme_calendar_details = defaultdict(list)
 
+    # Create a blank list for failing GroupID requests
+    current_app.failed_groups = ""
+
     for groupme_group in groupme_group_id_list:
         # Fetch data from GroupMe APIs
         url_group_info = 'https://api.groupme.com/v3/groups/{groupme_group}'.format(groupme_group=groupme_group)
@@ -53,7 +56,9 @@ def load_groupme_json(app, groupme_api_key, groupme_group_id):
         if response.status_code != 200:
             current_app.groupme_load_successfully = False
             app.logger.error('GroupID {}: Status Code {}: {}'.format(groupme_group, response.status_code, response.text))
-            return False
+            current_app.failed_groups += "{} ".format(groupme_group)
+            continue
+            # This goes back to beginning of for loop as we no longer "return False" for failed GroupID requests
 
         current_app.groupme_calendar_json_cache.append(response.json())
 
@@ -96,6 +101,10 @@ def load_groupme_json(app, groupme_api_key, groupme_group_id):
             # Append share URL for the group
             if response.json().get('response', {}).get('share_url', None):
                 current_app.groupme_calendar_details.setdefault(groupme_group, []).append(response.json().get('response', {}).get('share_url'))
+
+    # If there were any failed GroupID requests, log them in one simple string
+    if current_app.failed_groups:
+        app.logger.error('GroupID Error(s): {}'.format(current_app.failed_groups))
 
     current_app.groupme_load_successfully = True
     return True

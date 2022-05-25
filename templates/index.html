@@ -56,6 +56,8 @@
         text-decoration: none;
     }
 
+    div:empty { display: none !important }
+
     /* Portrait phones and smaller */
     @media (max-width: 767px) {
         .calendar-links {
@@ -69,6 +71,7 @@
 
 <div class="container">
     <h1>{{title}} Calendar</h1>
+    <div class="alert alert-warning" role="alert">{{warning_group_error}}</div>
     <div class="row">
         <div class="col-sm-12" >Subscribe to the calendar for the GroupMe group <b>{{title}}</b> in timezone {{calendar_timezone}}:</div>
     </div>
@@ -121,6 +124,17 @@
 
 
 </div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var showwarning = $("{{failed_groups}}").val();
+        if(showwarning == "") {
+            $(".alert").hide();
+        } else {
+            $(".alert").show();
+        }
+    });
+</script>
     
 </body>
 </html>
