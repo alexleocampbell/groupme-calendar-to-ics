@@ -52,7 +52,7 @@ def load_groupme_json(app, groupme_api_key, groupme_group_id):
         response = requests.get(url_calendar, headers=headers)
         if response.status_code != 200:
             current_app.groupme_load_successfully = False
-            app.logger.error('{}: {}'.format(response.status_code, response.text))
+            app.logger.error('GroupID {}: Status Code {}: {}'.format(groupme_group, response.status_code, response.text))
             return False
 
         current_app.groupme_calendar_json_cache.append(response.json())
