@@ -46,18 +46,13 @@ def index():
 
     ics_url_http, ics_url_webcal, ics_url_google = utils.build_ics_urls(ics_url)
 
-    # Create a warning message, if there were any failed GroupID requests
-    warning_group_error = ""
-    if current_app.failed_groups:
-        warning_group_error = 'Failed to load GroupID(s): {}'.format(current_app.failed_groups)
-
     params = {
         'title': getattr(current_app, 'groupme_calendar_name', 'GroupMe'),
         'ics_url_http': ics_url_http,
         'ics_url_webcal': ics_url_webcal,
         'ics_url_google': ics_url_google,
         'calendar_timezone': current_app.calendar_timezone,
-        'warning_group_error': warning_group_error,
+        'warning_group_error': current_app.failed_groups,
     }
 
     # Return a template, but also some basic info about the latest cache time.
@@ -84,7 +79,7 @@ def full_ics():
 
         successfully_load_json = utils.load_groupme_json(app=app, groupme_api_key=groupme_api_key, groupme_group_id=groupme_group_id)
         if not successfully_load_json:
-            return utils.return_ics_Response(utils.groupme_ics_error(error_text='critical error loading calendar'))
+            return utils.return_ics_Response(utils.groupme_ics_error(error_text='Critical error loading calendar'))
         current_app.ics_cache = utils.groupme_json_to_ics(groupme_json=current_app.groupme_calendar_json_cache)
         current_app.last_cache = datetime.datetime.now()
     else:
